@@ -1,0 +1,31 @@
+node default {
+
+  # This resource runs the 'apt-get update' command.
+  exec { 'apt_update':
+    command     => '/usr/bin/apt-get update', # The exact command to execute.
+    path        => ['/usr/bin', '/usr/sbin'], # Tells Puppet where to find the 'apt-get' executable.
+  }
+
+  # This resource manages the 'apache2' software package.
+  package { 'apache2':
+    ensure  => installed,                     # The goal: ensure this package is installed. If not, Puppet installs it.
+    require => Exec['apt_update'],            # A dependency: Do not try to install Apache UNTIL 'apt_update' is complete.
+  }
+
+  # This resource manages the 'apache2' service.
+  service { 'apache2':
+    ensure    => running,                     # The goal: ensure the service is running. If stopped, Puppet starts it.
+    enable    => true,                        # The goal: ensure the service starts automatically on boot.
+    require  => Package['apache2'],           # A dependency: Do not try to manage the service UNTIL the package is installed.
+  }
+
+  # This resource manages the Apache homepage file.
+  file { '/var/www/html/index.html':
+    ensure  => file,                          # The goal: ensure this path exists and is a file.
+    content => "This page is managed by Puppet.\n", # The goal: ensure the file's content is exactly this. If not, Puppet overwrites it.
+    owner   => 'www-data',                    # Sets the file's owner.
+    group   => 'www-data',                    # Sets the file's group.
+    mode    => '0644',                        # Sets the file's permissions (read/write for owner, read-only for everyone else).
+    require => Package['apache2'],            # A dependency: Do not manage this file UNTIL the Apache package is installed.
+  }
+}
