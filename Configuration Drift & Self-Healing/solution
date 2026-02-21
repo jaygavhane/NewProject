@@ -6,6 +6,10 @@ puppet describe --list
 puppet describe <TYPE>
 puppet resource <TYPE> <NAME>
 
+puppet parser validate <FILE>
+puppet agent -t --noop # just report on what it would have changed
+puppet agent -t # trigger a Puppet run to apply the configuration
+
 ---
 
 node default {
