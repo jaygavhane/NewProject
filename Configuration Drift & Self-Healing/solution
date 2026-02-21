@@ -3,7 +3,7 @@ HOW TO FIGURE THINGS OUT YOURSELF
 OFFICIAL DOCS: https://help.puppet.com/core//current/Content/PuppetCore/puppet_index.htm
 
 puppet describe --list
-puppet describe <ITEM>
+puppet describe <TYPE>
 puppet resource <TYPE> <NAME>
 
 ---
