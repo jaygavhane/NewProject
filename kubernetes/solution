@@ -1,0 +1,5 @@
+kubectl create configmap app-config \
+  -n secure-deploy-prod \
+  --from-file=app.properties \
+  --from-literal=MAX_CONNECTIONS=100 \
+  --from-literal=CACHE_TTL=3600
