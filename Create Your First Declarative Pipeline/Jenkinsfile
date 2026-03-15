@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                echo "Cloning repository..."
+                git url: 'https://github.com/scaler2101/jenkins-DP-01.git', branch: 'main'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo "Zipping project files..."
+                sh '''
+                    mkdir -p build
+                    zip -r build/artifact.zip .
+                '''
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "TEST SUITE START"
+
+                sh '''
+                    if [ -f build/artifact.zip ]; then
+                        echo "Artifact exists"
+                    else
+                        echo "Artifact missing"
+                    fi
+                '''
+            }
+        }
+    }
+}
