@@ -3,3 +3,9 @@ kubectl create configmap app-config \
   --from-file=app.properties \
   --from-literal=MAX_CONNECTIONS=100 \
   --from-literal=CACHE_TTL=3600
+
+kubectl create secret generic app-secrets \
+  -n secure-deploy-prod \
+  --from-literal=db-username=admin_user \
+  --from-literal=db-password='SecureP@ssw0rd123' \
+  --from-literal=api-key=1234567890abcdef
