@@ -1,3 +1,43 @@
+user@f6a47df00a2a:~$ cd k8s-secure-deployment/
+user@f6a47df00a2a:~/k8s-secure-deployment$ ls
+README.md  deployment.yaml  service.yaml
+user@f6a47df00a2a:~/k8s-secure-deployment$ cat deployment.yaml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-app
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: microservice
+  template:
+    metadata:
+      labels:
+        app: microservice
+    spec:
+      containers:
+        - name: microservice-app
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+
+          # Liveness probe is present
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+user@f6a47df00a2a:~/k8s-secure-deployment$ 
+
+
+
 1. Kubernetes Secure Deployment
 Save for later
 Kubernetes Secure Deployment Challenge
